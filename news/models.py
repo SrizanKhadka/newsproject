@@ -14,3 +14,4 @@ class Article(models.Model):
 
     updated_date = models.DateField(auto_now=True) #When this option is set, the field will be updated to the current date and time every time the object is saved
     #This means that every time you call save() on the model instance, the updated_date field will be updated.
+ 
