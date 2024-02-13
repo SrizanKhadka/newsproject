@@ -15,7 +15,7 @@ class Article(models.Model):
     )  # When this option is set, the field will be set to the current date and time when an object is created for the first time.
     # Once set during the creation, it won't change subsequently when the object is updated.
 
-    updated_date = models.DateField(
+    updated_date = models.DateTimeField(
         auto_now=True
     )  # When this option is set, the field will be updated to the current date and time every time the object is saved
     # This means that every time you call save() on the model instance, the updated_date field will be updated.

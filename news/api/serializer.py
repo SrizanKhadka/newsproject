@@ -2,15 +2,15 @@ from rest_framework import serializers
 from news.models import Article
 
 class ArticleSerializer(serializers.Serializer):
-    id = serializers.IntegerField(readonly=True)
+    id = serializers.IntegerField(read_only=True)
     author = serializers.CharField()
     title = serializers.CharField()
     description = serializers.CharField()
     main_text = serializers.CharField()
     published_date = serializers.DateField()
     is_active = serializers.BooleanField()
-    created_date = serializers.DateTimeField(readonly=True)
-    updated_date = serializers.DateTimeField(readonly=True)
+    created_date = serializers.DateTimeField(read_only=True)
+    updated_date = serializers.DateTimeField(read_only=True)
     
     def create(self, validated_data):
         return Article.objects.create(**validated_data)
