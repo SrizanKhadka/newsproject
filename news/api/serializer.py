@@ -16,7 +16,7 @@ class ArticleSerializer(serializers.Serializer):
         return Article.objects.create(**validated_data)
     #As we know validated_data is dictonary, to extract it we used double **.
     
-    def update(self, validated_data,instance):
+    def update(self, instance,validated_data):
         instance.author = validated_data.get('author',instance.author)
         instance.title = validated_data.get('title', instance.title)
         instance.description = validated_data.get('description',instance.description)
