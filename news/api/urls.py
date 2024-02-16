@@ -15,8 +15,9 @@ urlpatterns = [
 urlpatterns = [
     path("article/", api_views.createArticleListAPIView.as_view(), name="article/list"),
     path(
-        "articles/<int:articleId>",
+        "articles/<int:pk>",
         api_views.articleDetailAPIView.as_view(),
         name="article/details",
     ),
+    path('authors/',api_views.createJournalistAPIView.as_view(),name="author/list")
 ]

@@ -1,12 +1,14 @@
 from rest_framework import serializers
-from news.models import Article
+from news.models import Article, Journalist
 from rest_framework.serializers import ModelSerializer
 from datetime import datetime
 from django.utils.timesince import timesince
+from datetime import date
 
 class ArticleSerializer(ModelSerializer):
 
     publishedSince = serializers.SerializerMethodField()
+    #author = serializers.StringRelatedField()
 
     class Meta:
         model = Article
@@ -17,9 +19,29 @@ class ArticleSerializer(ModelSerializer):
 
     def get_publishedSince(self, object):
         timeNow = datetime.now()
+        print(f"TIME NOW = {timeNow}")
         publishedTime = object.published_date
         timeDelta = timesince(publishedTime,timeNow)
         return timeDelta
+    
+    def validate_published_date(self,date):
+        today = date.today()
+        print(f"TODAY DATE = {today}")
+        if date > today:
+         raise serializers.ValidationError("The date has not come yet!")
+        return date
+    
+
+class JournalistSerializer(ModelSerializer):
+    #articles = ArticleSerializer(read_only=True,many=True)
+    articles = serializers.HyperlinkedRelatedField(
+        many=True,
+        read_only=True,
+        view_name="article/details"
+    )
+    class Meta: 
+        model = Journalist
+        fields = "__all__"
 
 
 class ArticleSerializerDefault(serializers.Serializer):
@@ -39,7 +61,7 @@ class ArticleSerializerDefault(serializers.Serializer):
     
     def update(self, instance,validated_data):
         instance.author = validated_data.get('author',instance.author)
-        instance.title = validated_data.get('title', instance.title)
+        instance.title = validated_data.get('title', instance.title) 
         instance.description = validated_data.get('description',instance.description)
         instance.main_text = validated_data.get('main_text', instance.main_text)
         instance.published_date = validated_data.get('published_date',instance.published_date)
